@@ -1,0 +1,57 @@
+---
+abstract: XXX
+author:
+  - 'Masayuki Matsuki E<lt>y.songmu@gmail.comE<gt>'
+build_requires:
+  Test::Exception: 0
+  Test::More: 0.98
+  Test::Requires: 0.06
+configure_requires:
+  Module::Build: 0.38
+dynamic_config: 0
+generated_by: 'Module::Build version 0.4003, CPAN::Meta::Converter version 2.120630'
+license: perl
+meta-spec:
+  url: http://module-build.sourceforge.net/META-spec-v1.4.html
+  version: 1.4
+name: Parse-Crontab
+no_index:
+  directory:
+    - inc
+provides:
+  Parse::Crontab:
+    file: lib/Parse/Crontab.pm
+    version: 0.01
+  Parse::Crontab::Entry:
+    file: lib/Parse/Crontab/Entry.pm
+    version: 0
+  Parse::Crontab::Entry::Comment:
+    file: lib/Parse/Crontab/Entry/Comment.pm
+    version: 0
+  Parse::Crontab::Entry::Empty:
+    file: lib/Parse/Crontab/Entry/Empty.pm
+    version: 0
+  Parse::Crontab::Entry::Env:
+    file: lib/Parse/Crontab/Entry/Env.pm
+    version: 0
+  Parse::Crontab::Entry::Error:
+    file: lib/Parse/Crontab/Entry/Error.pm
+    version: 0
+  Parse::Crontab::Entry::Job:
+    file: lib/Parse/Crontab/Entry/Job.pm
+    version: 0
+  Parse::Crontab::Schedule:
+    file: lib/Parse/Crontab/Schedule.pm
+    version: 0
+  Parse::Crontab::Schedule::Entity:
+    file: lib/Parse/Crontab/Schedule/Entity.pm
+    version: 0
+requires:
+  List::MoreUtils: 0
+  Mouse: 0
+  Path::Class: 0
+  Try::Tiny: 0
+  perl: 5.008001
+resources:
+  license: http://dev.perl.org/licenses/
+version: 0.01
