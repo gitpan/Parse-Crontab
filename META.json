@@ -1,5 +1,5 @@
 {
-   "abstract" : "XXX",
+   "abstract" : "Perl extention to parse Vixie crontab file",
    "author" : [
       "Masayuki Matsuki E<lt>y.songmu@gmail.comE<gt>"
    ],
@@ -44,7 +44,7 @@
    "provides" : {
       "Parse::Crontab" : {
          "file" : "lib/Parse/Crontab.pm",
-         "version" : "0.01"
+         "version" : "0.02"
       },
       "Parse::Crontab::Entry" : {
          "file" : "lib/Parse/Crontab/Entry.pm",
@@ -85,5 +85,5 @@
          "http://dev.perl.org/licenses/"
       ]
    },
-   "version" : "0.01"
+   "version" : "0.02"
 }

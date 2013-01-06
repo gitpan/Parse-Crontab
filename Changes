@@ -1,4 +1,8 @@
 Revision history for Perl extension Parse::Crontab
 
+0.02    Sun Jan 6 15:00:00 2013
+    - fix dist abstract
+    - fix bug under perl 5.12 lower
+
 0.01    Fri Jan 4 17:04:00 2013
     - original version

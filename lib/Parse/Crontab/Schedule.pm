@@ -16,7 +16,7 @@ has $_ => (
 ) for @SCHEDULES;
 
 has definition => (
-    is  => 'rw',
+    is  => 'ro',
     isa => 'Str',
 );
 
@@ -65,11 +65,7 @@ sub BUILD {
         }
     }
     else {
-        $s{minute}      = $self->minute;
-        $s{hour}        = $self->hour;
-        $s{day}         = $self->day;
-        $s{month}       = $self->month;
-        $s{day_of_week} = $self->day_of_week;
+        $s{$_} = $self->$_ for @SCHEDULES;
     }
 
     if (exists $s{minute}) {

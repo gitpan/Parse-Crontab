@@ -1,5 +1,5 @@
 ---
-abstract: XXX
+abstract: 'Perl extention to parse Vixie crontab file'
 author:
   - 'Masayuki Matsuki E<lt>y.songmu@gmail.comE<gt>'
 build_requires:
@@ -21,7 +21,7 @@ no_index:
 provides:
   Parse::Crontab:
     file: lib/Parse/Crontab.pm
-    version: 0.01
+    version: 0.02
   Parse::Crontab::Entry:
     file: lib/Parse/Crontab/Entry.pm
     version: 0
@@ -54,4 +54,4 @@ requires:
   perl: 5.008001
 resources:
   license: http://dev.perl.org/licenses/
-version: 0.01
+version: 0.02

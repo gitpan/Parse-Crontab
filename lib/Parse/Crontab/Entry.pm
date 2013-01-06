@@ -35,7 +35,7 @@ no Mouse;
 sub set_error {
     my ($self, $error_msg) = @_;
 
-    push $self->errors, $error_msg;
+    push @{$self->errors}, $error_msg;
     $self->is_error(1);
 }
 

@@ -4,7 +4,7 @@ use strict;
 use warnings;
 use Carp;
 
-our $VERSION = '0.01';
+our $VERSION = '0.02';
 
 use Mouse;
 use Path::Class;
@@ -59,7 +59,7 @@ sub BUILD {
             # overwritten if same key already exists
             $self->env->{$entry->key} = $entry->value;
         }
-        push $self->entries, $entry;
+        push @{$self->entries}, $entry;
     }
 }
 
