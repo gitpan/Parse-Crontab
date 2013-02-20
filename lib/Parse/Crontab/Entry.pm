@@ -30,6 +30,13 @@ has errors => (
     auto_deref => 1,
 );
 
+has warnings => (
+    is  => 'rw',
+    isa => 'ArrayRef[Str]',
+    default => sub {[]},
+    auto_deref => 1,
+);
+
 no Mouse;
 
 sub set_error {
@@ -43,6 +50,24 @@ sub error_message {
     my $self = shift;
 
     sprintf 'line: %d: %s | %s', $self->line_number, $self->line, join(' ', $self->errors);
+}
+
+sub set_warning {
+    my ($self, $warn_msg) = @_;
+
+    push @{$self->warnings}, $warn_msg;
+}
+
+sub warning_message {
+    my $self = shift;
+
+    sprintf 'line: %d: %s | %s', $self->line_number, $self->line, join(' ', $self->warnings);
+}
+
+sub has_warnings {
+    my $self = shift;
+
+    scalar @{$self->warnings} ? 1 : ();
 }
 
 __PACKAGE__->meta->make_immutable;

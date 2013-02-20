@@ -15,7 +15,13 @@ has command => (
 has schedule => (
     is  => 'rw',
     isa => 'Parse::Crontab::Schedule',
-    handles => [qw/minute hour day month day_of_week definition/],
+    handles => [qw/minute hour day month day_of_week definition user/],
+);
+
+has has_user_field => (
+    is  => 'ro',
+    isa => 'Bool',
+    default => undef,
 );
 
 no Mouse;
@@ -26,15 +32,34 @@ sub BUILD {
     my $line = $self->line;
     my $definition;
     my $command;
+    my $user;
 
     my %args;
     if (($definition) = $line =~ /^@([^\s]+)/) {
-        $command = (split /\s+/, $line, 2)[1];
-        $args{definition} = $definition;
-    }
 
-    unless ($definition) {
-        my ($min, $hour, $day, $month, $dow, $com) = split /\s+/, $line, 6;
+        if ($self->has_user_field) {
+            ($user, $command) = (split /\s+/, $line, 3)[1,2];
+        }
+        else {
+            $command = (split /\s+/, $line, 2)[1];
+        }
+
+        %args = (
+            definition => $definition,
+            user       => $user,
+        );
+    }
+    else {
+        my $entity_num = $self->has_user_field ? 7 : 6;
+        my @entities = split /\s+/, $line, $entity_num;
+        my ($min, $hour, $day, $month, $dow, $com);
+
+        if ($self->has_user_field) {
+            ($min, $hour, $day, $month, $dow, $user, $com) = @entities;
+        }
+        else {
+            ($min, $hour, $day, $month, $dow, $com) = @entities;
+        }
         unless ($com) {
             $self->set_error(sprintf '[%s] is not valid cron job', $self->line);
             return;
@@ -46,6 +71,7 @@ sub BUILD {
             day         => $day,
             month       => $month,
             day_of_week => $dow,
+            user        => $user,
         );
     }
 
@@ -57,6 +83,9 @@ sub BUILD {
 
     try {
         $self->schedule(Parse::Crontab::Schedule->new(%args));
+
+        my @warnings = $self->schedule->_check_warnings;
+        $self->set_warning($_) for @warnings;
     }
     catch {
         $self->set_error(sprintf 'schedule error! %s', $_);

@@ -44,7 +44,7 @@
    "provides" : {
       "Parse::Crontab" : {
          "file" : "lib/Parse/Crontab.pm",
-         "version" : "0.02"
+         "version" : "0.03"
       },
       "Parse::Crontab::Entry" : {
          "file" : "lib/Parse/Crontab/Entry.pm",
@@ -85,5 +85,5 @@
          "http://dev.perl.org/licenses/"
       ]
    },
-   "version" : "0.02"
+   "version" : "0.03"
 }

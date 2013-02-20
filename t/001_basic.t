@@ -38,4 +38,17 @@ ok !$crontab->is_valid;
 ok $crontab->error_messages;
 
 
+$crontab = new_ok 'Parse::Crontab', [
+    content => <<'...',
+*/1 * * * * songmu perl
+@daily    songmu perl
+...
+    has_user_field => 1,
+];
+
+for my $job ($crontab->jobs) {
+    is $job->user, 'songmu';
+    is $job->command, 'perl';
+}
+
 done_testing;

@@ -4,7 +4,7 @@ use strict;
 use warnings;
 
 use overload (
-    q{""}    => 'entity',
+    q{""}    => 'stringify',
 );
 
 use List::MoreUtils qw/uniq/;
@@ -142,5 +142,7 @@ sub _expand_range {
 
     ($from..$to);
 }
+
+sub stringify {shift->entity}
 
 __PACKAGE__->meta->make_immutable;

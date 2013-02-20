@@ -23,6 +23,18 @@ DESCRIPTION
     This software is for parsing and validating Vixie crontab files.
 
 INTERFACE
+  Constructor Options
+   "file"
+    crontab file.
+
+   "verbose"
+    verbose option (Default: 1). If errors/warnings exist, errors/warnings
+    message is dumped immediately when parsing.
+
+   "has_user_field"
+    for the crontab format having user field (system-width cron files and
+    all that).
+
   Functions
    "is_valid()"
     Checking crontab is valid or not.

@@ -4,7 +4,7 @@ use strict;
 use warnings;
 use Carp;
 
-our $VERSION = '0.02';
+our $VERSION = '0.03';
 
 use Mouse;
 use Path::Class;
@@ -43,6 +43,17 @@ has env => (
     default => sub {{}},
 );
 
+has verbose => (
+    is => 'rw',
+    isa => 'Bool',
+    default => 1,
+);
+
+has has_user_field => (
+    is => 'rw',
+    isa => 'Bool',
+    default => undef,
+);
 
 no Mouse;
 
@@ -52,7 +63,7 @@ sub BUILD {
     my $line_number = 1;
     for my $line (split /\r?\n/, $self->content) {
         my $entry_class = 'Parse::Crontab::Entry::'. $self->_decide_entry_class($line);
-        my $entry = $entry_class->new(line => $line, line_number => $line_number);
+        my $entry = $entry_class->new(line => $line, line_number => $line_number, has_user_field => $self->has_user_field);
         $line_number++;
 
         if ($entry_class eq 'Parse::Crontab::Entry::Env' && !$entry->is_error) {
@@ -60,6 +71,13 @@ sub BUILD {
             $self->env->{$entry->key} = $entry->value;
         }
         push @{$self->entries}, $entry;
+    }
+
+    if ($self->verbose) {
+        my $error = $self->error_messages;
+        warn $error if $error;
+        my $warn  = $self->warning_messages;
+        warn $warn  if $warn;
     }
 }
 
@@ -77,6 +95,15 @@ sub error_messages {
     my @errors;
     for my $entry ($self->entries) {
         push @errors, $entry->error_message if $entry->is_error;
+    }
+    join "\n", @errors;
+}
+
+sub warning_messages {
+    my $self = shift;
+    my @errors;
+    for my $entry ($self->entries) {
+        push @errors, $entry->warning_message if $entry->has_warnings;
     }
     join "\n", @errors;
 }
@@ -138,6 +165,21 @@ This document describes Parse::Crontab version 0.01.
 This software is for parsing and validating Vixie crontab files.
 
 =head1 INTERFACE
+
+=head2 Constructor Options
+
+=head3 C<< file >>
+
+crontab file.
+
+=head3 C<< verbose >>
+
+verbose option (Default: 1).
+If errors/warnings exist, errors/warnings message is dumped immediately when parsing.
+
+=head3 C<< has_user_field >>
+
+for the crontab format having user field (system-width cron files and all that).
 
 =head2 Functions
 

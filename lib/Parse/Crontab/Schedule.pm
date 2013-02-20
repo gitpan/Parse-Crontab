@@ -15,6 +15,11 @@ has $_ => (
     is => 'rw',
 ) for @SCHEDULES;
 
+has user => (
+    is => 'ro',
+    isa => 'Maybe[Str]',
+);
+
 has definition => (
     is  => 'ro',
     isa => 'Str',
@@ -83,6 +88,21 @@ sub BUILD {
             $self->$schedule($entity);
         }
     }
+}
+
+sub _check_warnings {
+    my $self = shift;
+
+    my @warnings;
+    if ($self->minute.'' eq '*') {
+        push @warnings,
+            q{Specifying '*' for minutes means EVERY MINUTES. You really want to do that and to remove this warning, specify '*/1' explicitly.}
+    }
+    if ($self->day_of_week.'' ne '*' && $self->day.'' ne '*') {
+        push @warnings,
+            q{Both specifying 'day_of_week' and 'day' field causes unexpected behavior. You should seperate job entries.}
+    }
+    @warnings;
 }
 
 __PACKAGE__->meta->make_immutable;
