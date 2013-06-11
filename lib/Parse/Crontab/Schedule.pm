@@ -80,6 +80,7 @@ sub BUILD {
                 $entity = Parse::Crontab::Schedule::Entity->new(
                     entity => $s{$schedule},
                     %{$ENTITY_PARAMS{$schedule}},
+                    field  => $schedule,
                 );
             }
             catch {
@@ -88,6 +89,24 @@ sub BUILD {
             $self->$schedule($entity);
         }
     }
+}
+
+sub parse {
+    my ($cls, $str) = @_;
+
+    my @s = split /\s+/, $str;
+    my %args;
+    for my $schedule (@SCHEDULES) {
+        my $arg = shift @s;
+        $args{$schedule} = $arg;
+    }
+
+    my $self = $cls->new(%args);
+
+    if (my @warns = $self->_check_warnings) {
+        croak join "\n", @warns;
+    }
+    $self;
 }
 
 sub _check_warnings {
@@ -105,4 +124,83 @@ sub _check_warnings {
     @warnings;
 }
 
+sub match {
+    my ($self, %args) = @_;
+
+    for my $s (qw/minute hour month/) {
+        return unless $self->$s->match($args{$s});
+    }
+
+    if ($self->day_of_week.'' ne '*') {
+        croak q{args year is not specified. could detect day_of_week.} unless $args{year};
+
+        require Time::Piece;
+        my $str = sprintf '%04d-%02d-%02d', $args{year}, $args{month}, $args{day};
+        my $day = Time::Piece->strptime($str, '%Y-%m-%d');
+
+        return unless $self->day_of_week->match($day->day_of_week);
+    }
+    else {
+        return unless $self->day->match($args{day});
+    }
+
+    1; # matched
+}
+
 __PACKAGE__->meta->make_immutable;
+__END__
+=for stopwords cron crontab
+
+=head1 NAME
+
+Parse::Crontab::Schedule - Perl extension to parse Vixie crontab schedule
+
+=head1 SYNOPSIS
+
+    use Parse::Crontab::Schedule;
+    my $schedule = Parse::Crontab::Schedule->parse('*/1 12 10 10 *');
+    if ($schedule->match(year => 2013, month => 10, day => 10, hour => 12, minute => 5) ) {
+        ...
+    }
+
+=head1 DESCRIPTION
+
+This software is for parsing and validating Vixie crontab files.
+
+=head1 INTERFACE
+
+=head2 Constructor
+
+=head3 C<< $schedule = Parse::Crontab::Schedule->parse($str) >>
+
+C<$str> is crontab schedule string like C<'*/1 12 10 10 *>.
+
+=head2 Functions
+
+=head3 C<< $bool = $schedule->match(%opt) >>
+
+The schedule matches or not.
+Keys of C<%opt> are C<minute>, C<hour>, C<day>, C<month>, C<year>.
+
+=head1 DEPENDENCIES
+
+Perl 5.8.1 or later.
+
+=head1 BUGS
+
+All complex software has bugs lurking in it, and this module is no
+exception. If you find a bug please either email me, or add the bug
+to cpan-RT.
+
+=head1 AUTHOR
+
+Masayuki Matsuki E<lt>y.songmu@gmail.comE<gt>
+
+=head1 LICENSE AND COPYRIGHT
+
+Copyright (c) 2013, Masayuki Matsuki. All rights reserved.
+
+This library is free software; you can redistribute it and/or modify
+it under the same terms as Perl itself.
+
+=cut

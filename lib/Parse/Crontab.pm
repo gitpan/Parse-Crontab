@@ -4,7 +4,7 @@ use strict;
 use warnings;
 use Carp;
 
-our $VERSION = '0.03';
+our $VERSION = '0.04';
 
 use Mouse;
 use Path::Class;
@@ -135,14 +135,11 @@ sub _decide_entry_class {
 
 __PACKAGE__->meta->make_immutable;
 __END__
+=for stopwords cron crontab
 
 =head1 NAME
 
-Parse::Crontab - Perl extention to parse Vixie crontab file
-
-=head1 VERSION
-
-This document describes Parse::Crontab version 0.01.
+Parse::Crontab - Perl extension to parse Vixie crontab file
 
 =head1 SYNOPSIS
 
@@ -204,10 +201,6 @@ Perl 5.8.1 or later.
 All complex software has bugs lurking in it, and this module is no
 exception. If you find a bug please either email me, or add the bug
 to cpan-RT.
-
-=head1 SEE ALSO
-
-L<perl>
 
 =head1 AUTHOR
 

@@ -1,15 +1,17 @@
 ---
-abstract: 'Perl extention to parse Vixie crontab file'
+abstract: 'Perl extension to parse Vixie crontab file'
 author:
-  - 'Masayuki Matsuki E<lt>y.songmu@gmail.comE<gt>'
+  - 'Masayuki Matsuki <y.songmu@gmail.com>'
 build_requires:
   Test::Exception: 0
   Test::More: 0.98
   Test::Requires: 0.06
 configure_requires:
+  CPAN::Meta: 0
+  CPAN::Meta::Prereqs: 0
   Module::Build: 0.38
 dynamic_config: 0
-generated_by: 'Module::Build version 0.4003, CPAN::Meta::Converter version 2.120630'
+generated_by: 'Minilla/v0.5.2, CPAN::Meta::Converter version 2.120921'
 license: perl
 meta-spec:
   url: http://module-build.sourceforge.net/META-spec-v1.4.html
@@ -17,11 +19,17 @@ meta-spec:
 name: Parse-Crontab
 no_index:
   directory:
+    - t
+    - xt
     - inc
+    - share
+    - eg
+    - examples
+    - author
 provides:
   Parse::Crontab:
     file: lib/Parse/Crontab.pm
-    version: 0.03
+    version: 0.04
   Parse::Crontab::Entry:
     file: lib/Parse/Crontab/Entry.pm
     version: 0
@@ -50,8 +58,11 @@ requires:
   List::MoreUtils: 0
   Mouse: 0
   Path::Class: 0
+  Time::Piece: 0
   Try::Tiny: 0
   perl: 5.008001
 resources:
-  license: http://dev.perl.org/licenses/
-version: 0.03
+  bugtracker: https://github.com/Songmu/p5-Parse-Crontab/issues
+  homepage: https://github.com/Songmu/p5-Parse-Crontab
+  repository: git://github.com/Songmu/p5-Parse-Crontab.git
+version: 0.04
